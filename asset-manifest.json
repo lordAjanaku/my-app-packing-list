@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/my-app-packing-list/static/css/main.8c5f5f47.css",
+    "main.js": "/my-app-packing-list/static/js/main.dd6c2b4f.js",
+    "index.html": "/my-app-packing-list/index.html",
+    "main.8c5f5f47.css.map": "/my-app-packing-list/static/css/main.8c5f5f47.css.map",
+    "main.dd6c2b4f.js.map": "/my-app-packing-list/static/js/main.dd6c2b4f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8c5f5f47.css",
+    "static/js/main.dd6c2b4f.js"
+  ]
+}
