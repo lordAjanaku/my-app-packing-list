@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Trash2, Plus, Package } from "lucide-react";
 import "./index.css";
 
-const itemsArray = [
+/* const itemsArray = [
   { id: crypto.randomUUID(), name: "passport", quantity: 1, isPacked: false },
   { id: crypto.randomUUID(), name: "t-shirt", quantity: 3, isPacked: false },
   { id: crypto.randomUUID(), name: "toothbrush", quantity: 1, isPacked: false },
   { id: crypto.randomUUID(), name: "sunglasses", quantity: 2, isPacked: false },
   { id: crypto.randomUUID(), name: "phone charger", quantity: 1, isPacked: false },
-];
+]; */
 
 function App() {
   const [items, setItems] = useState(itemsArray);
