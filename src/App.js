@@ -13,20 +13,24 @@ const itemsArray = [
 function App() {
   const [items, setItems] = useState(itemsArray);
 
+  function handleClearItems() {
+    setItems([]);
+  }
+
   return (
     <div className="container">
       <div className="card">
-        <Header />
-        <StatusBar />
+        <Header items={items} />
+        <StatusBar items={items} />
         <Form items={items} setItems={setItems} />
         <ListItems items={items} setItems={setItems} />
-        <button className="clear-button">Clear All</button>
+        <button className="clear-button" type="button" onClick={handleClearItems}>Clear All</button>
       </div>
     </div>
   );
 }
 
-function Header() {
+function Header({items}) {
   return (
     <header className="header">
       <div className="header-content">
@@ -35,12 +39,17 @@ function Header() {
       </div>
 
       <p className="subtitle">Ready for your trip?</p>
-      <ProgressCircle />
+      <ProgressCircle items={items} />
     </header>
   );
 }
 
-function ProgressCircle() {
+function ProgressCircle({items}) {
+  const packed = items.filter(item => item.isPacked).length;
+  const progress = items.length ? +((packed / items.length) * 100).toFixed(1) : 0;
+  const circumference = 2 * Math.PI * 24;
+  const offset = circumference * (1 - progress);
+    
   return (
     <div className="progress-circle">
       <svg className="progress-svg" viewBox="0 0 56 56">
@@ -52,22 +61,25 @@ function ProgressCircle() {
           stroke="#8b5cf6"
           strokeWidth="4"
           fill="none"
-          strokeDasharray={`${2 * Math.PI * 24}`}
-          strokeDashoffset={`${2 * Math.PI * 24 * 0.4}`}
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
           strokeLinecap="round"
         />
       </svg>
-      <span className="progress-text">60%</span>
+      <span className="progress-text">{progress}%</span>
     </div>
   );
 }
 
-function StatusBar() {
+function StatusBar({items}) {
+  const packedCount = items.filter(item => item.isPacked).length;
+  const total = items.length;
+    
   return (
     <div className="stats-bar">
       <span className="stats-left">
-        <span className="stats-bold">3</span>
-        <span className="stats-gray">/5</span>
+        <span className="stats-bold">{packedCount}</span>
+        <span className="stats-gray">/{total}</span>
       </span>
       <span className="stats-right">In progress</span>
     </div>
@@ -145,7 +157,7 @@ function Item({ id, name, quantity, isPacked, handleToggle, handleDeleteItem }) 
 
 function Form({ items, setItems }) {
   const [itemName, setItemName] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState("1");
 
   function handleAddItem(newItem) {
     setItems([...items, newItem]);
@@ -159,13 +171,13 @@ function Form({ items, setItems }) {
     const newItem = {
       id: crypto.randomUUID(),
       name: itemName,
-      quantity,
+      quantity: Number(quantity),
       isPacked: false,
     };
 
     handleAddItem(newItem);
     setItemName("");
-    setQuantity(1);
+    setQuantity("1");
   }
 
   return (
@@ -184,7 +196,21 @@ function Form({ items, setItems }) {
           value={quantity}
           min="1"
           className="number-input"
-          onChange={(e) => setQuantity(Number(e.target.value))}
+          onChange={(e) => {
+              const val = e.target.value;
+              
+              if (val === "") {
+                setQuantity("");
+                return;
+              }
+
+              if (val === "0") {
+                setQuantity("1");
+                return;
+              }
+              
+              setQuantity(val);
+          }}
         />
       </div>
 
