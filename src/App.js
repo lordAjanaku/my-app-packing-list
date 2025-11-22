@@ -11,7 +11,7 @@ import "./index.css";
 ]; */
 
 function App() {
-  const [items, setItems] = useState(itemsArray);
+  const [items, setItems] = useState([]);
 
   function handleClearItems() {
     setItems([]);
